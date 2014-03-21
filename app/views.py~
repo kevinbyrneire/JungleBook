@@ -12,12 +12,7 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user=current_user
-	if g.user.is_authenticated():
-		g.search_form=Search()
-		#db.session.add(g.user)
-		#db.session.commit()
-	#g.age=(date.today-g.user.dob).days/365
-		#g.user.age = 20#(date.today()-g.dob)/365
+
 @app.route('/')
 def home():
 	if g.user.is_authenticated():
@@ -141,7 +136,7 @@ def search():
 @app.route('/search_results/<criteria>')
 @login_required
 def search_results(criteria):
-	return render_template('search.html',results=User.query.whoosh_search(criteria).all())
+	return render_template('search.html',results=User.query.filter_by(first_name=criteria).all())
 
 @app.route('/users')
 @app.route('/users/<int:page>')

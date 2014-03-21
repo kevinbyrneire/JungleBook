@@ -1,6 +1,6 @@
 from app import db
 from app import app
-import flask.ext.whooshalchemy as whooshalchemy
+#import flask.ext.whooshalchemy as whooshalchemy
 friend = db.Table('friend',
 	db.Column('id_1',db.Integer,db.ForeignKey('user.id')),
 	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))
@@ -11,7 +11,7 @@ friend = db.Table('friend',
 class User(db.Model):
 	
 	__tablename__ = 'user'
-	__searchable__=['first_name','last_name']
+	#__searchable__=['first_name','last_name']
 	id = db.Column(db.Integer, primary_key=True)
 	first_name = db.Column(db.String(50),unique=False)
 	last_name= db.Column(db.String(50),unique=False)
@@ -86,4 +86,4 @@ class User(db.Model):
 #	def __repr__(self):
 #		return '<User %r>' % (self.first_name)
 #from app import app
-whooshalchemy.whoosh_index(app, User)
+#whooshalchemy.whoosh_index(app, User)

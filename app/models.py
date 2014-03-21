@@ -1,17 +1,13 @@
 from app import db
 from app import app
-#import flask.ext.whooshalchemy as whooshalchemy
 friend = db.Table('friend',
 	db.Column('id_1',db.Integer,db.ForeignKey('user.id')),
-	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))
-	#db.Column('are_besties' ,db.Boolean))
-	
+	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))	
 	
 
 class User(db.Model):
 	
 	__tablename__ = 'user'
-	#__searchable__=['first_name','last_name']
 	id = db.Column(db.Integer, primary_key=True)
 	first_name = db.Column(db.String(50),unique=False)
 	last_name= db.Column(db.String(50),unique=False)
@@ -20,15 +16,10 @@ class User(db.Model):
 	password = db.Column(db.String(120))
 	dob=db.Column(db.Date)
 	home = db.Column(db.String(50),unique=False)
-	#bestie = db.Column(db.Integer, db.ForeignKey('user.id'))
-	#besties = db.relationship('User',secondary=friend,uselist=False,primaryjoin=(id==friend.c.id_2 or id==friend.c.id_1),
-	#secondaryjoin=(friend.c.are_besties),backref=db.backref('bestie',uselist=False))
 
 	friends = db.relationship('User',secondary=friend,primaryjoin=(id==friend.c.id_1),
 	secondaryjoin=(id==friend.c.id_2),backref=db.backref('friend',lazy='dynamic'),lazy='dynamic')
 
-
-	#bst_frnd = db.relationship('User',uselist=False)
 	
 
 	def __init__(self, first_name=None,last_name=None, nickname = None, email=None,home=None, password=None,dob=None):
@@ -39,7 +30,6 @@ class User(db.Model):
 		self.dob = dob
 		self.password = password
 		self.home=home
-		#self.besties = bestfriend
 
 	def is_authenticated(self):
 		return True
@@ -82,8 +72,3 @@ class User(db.Model):
 	def count_friends(self):
 		return self.friends.count()+self.friend.count()
 
-
-#	def __repr__(self):
-#		return '<User %r>' % (self.first_name)
-#from app import app
-#whooshalchemy.whoosh_index(app, User)

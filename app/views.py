@@ -12,12 +12,7 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user=current_user
-	if g.user.is_authenticated():
-		g.search_form=Search()
-		#db.session.add(g.user)
-		#db.session.commit()
-	#g.age=(date.today-g.user.dob).days/365
-		#g.user.age = 20#(date.today()-g.dob)/365
+
 @app.route('/')
 def home():
 	if g.user.is_authenticated():
@@ -88,8 +83,7 @@ def add_friend(id):
 	if new is None:
 		flash('That is not a valid user-id.')
 		return redirect(url_for('home'))
-	#frndshp = g.user.add_friend(new)
-	#db.session.add(frndshp)
+
 	db.session.add(g.user.add_friend(new))
 	db.session.commit()
 	flash('You are now friends with '+new.first_name+' '+new.last_name)
@@ -125,8 +119,7 @@ def edit(id):
 		if form.hometown.data: g.user.home=form.hometown.data
 		db.session.add(g.user)
 		db.session.commit()
-		#flash(form.nickname.data +' ' + g.user.nickname)
-		#db.session.commit()
+
 		return redirect(url_for('profile',id=g.user.id))
 	return render_template('edit.html',form=form)
 
@@ -147,13 +140,8 @@ def search_results(criteria):
 @app.route('/users/<int:page>')
 @login_required
 def list_users(page=1):
-	#if sortby=='friends':
-		#return render_template('index.html',users=User.query.order_by(User.count_friends()))
+
 	return render_template('index.html', users=User.query.order_by(User.last_name).paginate(page,MAX_USERS,False))
 
-
-
-#if __name__=='__main__':
-#	app.run()
 
 
