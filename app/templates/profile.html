@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1> {{user.first_name}} {{user.last_name}} {%if user.nickname%}({{user.nickname}}){%endif%}</h1>
+
+<div>
+<a href="/friends/{{user.id}}">View Friends({{user.count_friends()}})<br> </a>
+{% if user.id == g.user.id %}
+ <a href="/edit/{{user.id}}"> Edit Profile </a>
+
+{%else%}
+{%if g.user.is_friend(user)%} <a href="/remove_friend/{{user.id}}"> Unfriend </a>
+{%else%} <a href="/add_friend/{{user.id}}"> Add Friend</a> {%endif%}
+
+{%endif%} 
+</div>
+<br>
+<p>Age {{age}}<br>
+{%if user.home%}
+From {{user.home}} <br>
+{%endif%}
+Email: {{user.email}} </p>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{%extends 'base.html' %}
+{% block content %}
+<h1> Search Results </h1>
+{%if results%}
+{% for i in results %}
+<a href= "/{{i.id}}">{{i.first_name}} {{i.last_name}}</a><br>
+{%endfor%}
+{%else%}
+No results found
+{%endif%}
+{%endblock%}

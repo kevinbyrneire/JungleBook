@@ -1,0 +1,16 @@
+{%extends 'base.html' %}
+{% block content %}
+<h1> {{user.first_name}} {{user.last_name}} - Friends </h1>
+<div>
+{% with friends=user.list_friends() %}
+{%if friends %}
+<ul>
+{% for f in friends %}
+<li><a href="/profile/{{f.id}}">{{f.first_name}} {{f.last_name}} </a> <br></li>
+{%endfor%}
+</ul>
+{%else%} You don't have any friends yet. <a href = "{{url_for('home')}}" >Find Friends </a>
+{%endif%}
+{%endwith%}
+</div>
+{% endblock %}
