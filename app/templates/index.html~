@@ -4,7 +4,7 @@
 <p> Order By: <a href = "{{url_for('list_users')}}" >Name</a> | <a href = "{{url_for('list_users')}}" >Friends</a> </p>
 <ul>
 {%for i in users.items %}
-{%if i is not g.user%}
+{%if i.id!= g.user.id%}
 <li> <a href = "/profile/{{i.id}}" >{{i.first_name}} {{i.last_name}}</a> | {{i.count_friends()}} Friends </li>
 {%endif%}
 {%endfor%} </ul>
