@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1> JungleBook - Sign Up </h1>
+<h1> JungleBook - Sign Up </h1> <br>
 <div class="container">
  <form action="" method = 'post' name='SignUp'>
  {{form.hidden_tag()}}
