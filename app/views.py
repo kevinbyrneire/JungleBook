@@ -45,7 +45,7 @@ def login():
 def logout():
 	logout_user()
 	flash('You have been logged out.')
-	return redirect(url_for('home'))
+	return redirect(url_for('login'))
 
 @app.route('/signup',methods=['GET','POST'])
 def sign_up():
