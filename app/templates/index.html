@@ -9,7 +9,10 @@
 <li> <a href = "/profile/{{i.id}}" >{{i.first_name}} {{i.last_name}}</a> | {{i.count_friends()}} Friends </li>
 {%endif%}
 {%endfor%} </ul>
+<div style="margin-left:30px;">
 {% if users.has_prev %} <a href = "{{url_for('list_users',page=users.prev_num)}}"> Prev </a>{%endif%}
 {% if users.has_next %} <a href="{{url_for('list_users',page=users.next_num)}}"> Next </a> {%endif%}
+</div>
+</div>
 {% endblock %}
 
