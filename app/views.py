@@ -142,6 +142,16 @@ def search_results(criteria):
 def list_users(page=1):
 
 	return render_template('index.html', users=User.query.order_by(User.last_name).paginate(page,MAX_USERS,False))
+@app.route('/confirm')
+@login_required
+def confirm_del():
+	return render_template('confirmation.html')
 
-
+@app.route('/remove')
+@login_required
+def remove_acc():	
+	db.session.delete(g.user)
+	db.session.commit()
+	flash('Your account has been deleted')
+	return redirect(url_for('home'))
 

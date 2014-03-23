@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h1> Edit Profile </h1>
-<form action="" method = 'post' name='SignUp' style = "margin-left:20px;">
+<div style = "margin-left:20px;">
+<form action="" method = 'post' name='SignUp'>
 {{form.hidden_tag()}}
 <p> First Name <br> {{form.firstname(size = 30)}}</p>
 <p> Last Name<br> {{form.lastname(size=30)}}</p>
@@ -11,5 +12,6 @@
 
 <input type = "submit" value = "Save"> <a href={{url_for('profile',id=g.user.id)}} style= 'text-decoration: none'>
 <input type='button' value='Cancel' /> </a>
-</form>
+</form> <br>
+Click <a href = "/confirm" >here</a> to remove your account </div>
 {%endblock%}
