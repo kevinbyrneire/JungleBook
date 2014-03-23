@@ -6,7 +6,8 @@
 <p> First Name <br> {{form.firstname(size = 30)}}</p>
 <p> Last Name<br> {{form.lastname(size=30)}}</p>
 <p> DOB (dd/mm/yyyy) <br> {{form.dob}}</p>
-<p> Nickname (optional)<br> {{form.nickname(size=20)}}</p>
+<p> Hometown<br> {{form.hometown(size=30)}}</p>
+<p> Nickname <br> {{form.nickname(size=20)}}</p>
 
 <input type = "submit" value = "Save"> <a href={{url_for('profile',id=g.user.id)}} style= 'text-decoration: none'>
 <input type='button' value='Cancel' /> </a>
