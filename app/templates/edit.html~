@@ -12,6 +12,6 @@
 
 <input type = "submit" value = "Save"> <a href={{url_for('profile',id=g.user.id)}} style= 'text-decoration: none'>
 <input type='button' value='Cancel' /> </a>
-</form>
-<p> Click <a href = "/confirm" >here</a> to remove your account </p> </div>
+</form> <br>
+Click <a href = "/confirm" >here</a> to remove your account </div>
 {%endblock%}
