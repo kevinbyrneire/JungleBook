@@ -4,7 +4,7 @@ from app.models import User
 from flask.ext.login import login_user, current_user,logout_user, login_required
 from forms import Login,SignUp,EditProf,Search
 from datetime import date
-
+  
 @log_man.user_loader
 def load_user(id):
 	return User.query.get(int(id))
@@ -142,6 +142,7 @@ def search_results(criteria):
 def list_users(page=1):
 
 	return render_template('index.html', users=User.query.order_by(User.last_name).paginate(page,MAX_USERS,False))
+
 @app.route('/confirm')
 @login_required
 def confirm_del():

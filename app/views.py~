@@ -5,6 +5,35 @@ from flask.ext.login import login_user, current_user,logout_user, login_required
 from forms import Login,SignUp,EditProf,Search
 from datetime import date
 
+def mergesort(start_list):
+	size=len(start_list)  ##record the length of the list ##
+	if size < 2:          ##if the list is of length 1 or zero it is already sorted
+		return start_list  ## so we return the list as it is ##
+	mid = size//2
+	return merge(mergesort(start_list[:mid]),mergesort(start_list[mid:]))
+
+
+def merge(left_list,right_list):
+
+	result = [] 
+	left_low_bound=0
+	right_low_bound=0   
+	while left_low_bound < len(left_list) and right_low_bound < len(right_list):
+                                     
+
+		if left_list[left_low_bound].count_friends() <= right_list[right_low_bound].count_friends():
+			result+=[left_list[left_low_bound]] 
+			left_low_bound+=1   ## increment the lower bound by 1 for left_list##
+		else:
+			result+=[right_list[right_low_bound]] 
+
+			right_low_bound+=1  
+	if (left_low_bound<len(left_list)): 
+		result+=left_list[left_low_bound:]  
+	else:
+        	result+=right_list[right_low_bound:] 
+	return result
+  
 @log_man.user_loader
 def load_user(id):
 	return User.query.get(int(id))
@@ -64,7 +93,6 @@ def sign_up():
 			flash("You have successfully signed up. Welcome "+user.first_name)
 			return redirect(url_for('home'))
 		flash("This email address is already in use. Please enter a valid email address")
-	flash('validation error')
 	return render_template('signup.html',form=form)
 
 @app.route('/profile/<id>')
