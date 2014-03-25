@@ -1,5 +1,0 @@
-import os
-from __init__ import db,models
-
-for i in models.User.query.all():
-	print(i.id)
