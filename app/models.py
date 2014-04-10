@@ -1,9 +1,22 @@
 from app import db
+from sqlalchemy import func,select,or_,and_
+from sqlalchemy.orm import column_property
+from sqlalchemy.ext.hybrid import hybrid_property
 from app import app
+
 friend = db.Table('friend',
 	db.Column('id_1',db.Integer,db.ForeignKey('user.id')),
-	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))	
+	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))
 	
+
+
+besties = db.Table('besties',
+	db.Column('id_1', db.Integer,db.ForeignKey('user.id')),
+	db.Column('id_2', db.Integer,db.ForeignKey('user.id')))
+
+requests = db.Table('requests',
+	db.Column('id_1',db.Integer,db.ForeignKey('user.id')),
+	db.Column('id_2' ,db.Integer,db.ForeignKey('user.id')))
 
 class User(db.Model):
 	
@@ -15,12 +28,20 @@ class User(db.Model):
 	email = db.Column(db.String(120), unique=True)
 	password = db.Column(db.String(120))
 	dob=db.Column(db.Date)
+
 	home = db.Column(db.String(50),unique=False)
+
+	besty = db.relationship('User',secondary=besties, uselist = False, primaryjoin=(id==besties.c.id_1),
+	secondaryjoin=(id==besties.c.id_2),backref=db.backref('bestie',lazy='dynamic'))
 
 	friends = db.relationship('User',secondary=friend,primaryjoin=(id==friend.c.id_1),
 	secondaryjoin=(id==friend.c.id_2),backref=db.backref('friend',lazy='dynamic'),lazy='dynamic')
 
-	
+	asked = db.relationship('User',secondary=requests, primaryjoin=(id==requests.c.id_1),
+	secondaryjoin=(id==requests.c.id_2), backref=db.backref('pending',lazy='dynamic'),lazy='dynamic')
+
+	friend_count = column_property(select([func.count(friend)]).where(or_(friend.c.id_2==id,friend.c.id_1==id)).correlate_except(friend))
+
 
 	def __init__(self, first_name=None,last_name=None, nickname = None, email=None,home=None, password=None,dob=None):
 		self.first_name = first_name
@@ -43,6 +64,9 @@ class User(db.Model):
 	def get_id(self):
 		return unicode(self.id)
 
+	def is_requested(self,my_friend):
+		return self.pending.filter(requests.c.id_1==my_friend.id).count()>0
+
 
 	def is_friend(self,my_friend):
 		return self.friends.filter(friend.c.id_2==my_friend.id).union(self.friend.filter(friend.c.id_1==my_friend.id)).count()>0
@@ -50,11 +74,18 @@ class User(db.Model):
 
 	def add_friend(self,new_friend):
 		if not(self.is_friend(new_friend)):
-			self.friends.append(new_friend)
+			if self.is_requested(new_friend):
+				self.pending.remove(new_friend)
+				self.friends.append(new_friend)
+			
+			elif self.asked.filter(requests.c.id_2==new_friend.id).count()==0:
+				
+				self.asked.append(new_friend)
+
 			return self
 
-	def add_best(my_friend):
-		self.besties=my_friend
+	def add_best(self,my_friend):
+		self.besty=my_friend
 		return self
 
 	
@@ -69,6 +100,11 @@ class User(db.Model):
 	def list_friends(self):
 		return self.friends.union(self.friend).order_by(User.last_name).all()
 	
+
 	def count_friends(self):
 		return self.friends.count()+self.friend.count()
+
+
+
+
 

@@ -17,11 +17,12 @@
   {%if g.user.is_authenticated() %}
   {{g.user.first_name}} {{g.user.last_name}} <a href="/">Home</a> |   
   <a href="/profile/{{g.user.id}}">Profile</a> 
-  <a href="/logout" style= "float: right; margin-right:10px;" >Logout</a> <br>
+  <a href="/logout" style= "float: right; margin-right:10px;" >Logout</a> |
+  <a href="{{url_for('edit',id=g.user.id)}}"> Account Settings</a> <br>
   {% else %}
   JungleBook: <a href="/">Home</a> |
   <a href="/login">Login</a> 	 
-  <a href="/signup" style= "float: right; margin-right:10px;" >Sign Up</a>
+  <a href="/signup" style= "float: right; margin-right:10px;" >Sign Up</a> <br>
   {% endif %}  </div> <hr>
 
 

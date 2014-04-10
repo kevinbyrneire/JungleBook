@@ -1,0 +1,19 @@
+{%extends 'base.html' %}
+{% block content %}
+
+<h1> {{g.user.first_name}} {{g.user.last_name}} - Friend Requests </h1>
+<div style = "margin-left:20px;">
+  {% with users=g.user.pending.all() %}
+  {%if users %}
+    <ul>
+    {% for f in users %}
+    <li><a href="/profile/{{f.id}}">{{f.first_name}} {{f.last_name}} </a> | 
+        <a href="/add_friend/{{f.id}}">Confirm </a> <br></li>
+    {%endfor%}
+    </ul>
+  {%else%} You don't have any friend requests pending.
+  {%endif%}
+  {%endwith%}
+</div>
+
+{% endblock %}
