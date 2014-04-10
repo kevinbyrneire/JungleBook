@@ -31,15 +31,7 @@ class EditProf(Form):
 	dob = DateField('DOB',[validators.Optional()],format='%d/%m/%Y')
 	hometown = TextField('Hometown',[validators.Optional()])
 	nickname = TextField('Nickname',[validators.Optional()])
-    	def __init__(self, *args, **kwargs):
-        	Form.__init__(self, *args, **kwargs)
-        
-	def validate(self):
-		if not Form.validate(self):
-            
-			return False
-		return True
-        
+
 
 class Search(Form):
 	search=TextField('Search',[validators.Required()])
