@@ -35,7 +35,7 @@ def home():
 @app.route('/users/<int:page>/<int:stype>')
 @login_required
 def list_users(page=1,stype=1):
-	sort = {1:User.last_name,2:User.first_name,3:desc(User.friend_count)}
+	sort = {1:User.last_name,2:User.first_name,3:desc(User.dob)}
 	if stype in [1,2,3]:
 		return render_template('index.html', users=User.query.order_by(sort[stype]).paginate(page,MAX_USERS,False))
 	return redirect(url_for('home'))

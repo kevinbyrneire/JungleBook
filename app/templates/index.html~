@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+
+<h1 style = "margin-left: 10px;"> JungleBook - Find Friends </h1>
+
 <div style = "margin-left:20px;">
-<h1> JungleBook - Find Friends </h1>
 <p> Order By: <a href = "{{url_for('list_users')}}" >Last Name</a> | 
     <a href = "{{url_for('list_users',page=users.page,stype=2)}}" >First Name</a> | 
     <a href = "{{url_for('list_users',page=users.page,stype=3)}}" >No. of Friends<a> 
