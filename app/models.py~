@@ -75,6 +75,7 @@ class User(db.Model):
 	def add_friend(self,new_friend):
 		if not(self.is_friend(new_friend)):
 			if self.is_requested(new_friend):
+				self.pending.remove(new_friend)
 				self.friends.append(new_friend)
 			
 			elif self.asked.filter(requests.c.id_2==new_friend.id).count()==0:
