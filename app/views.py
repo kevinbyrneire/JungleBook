@@ -35,7 +35,7 @@ def home():
 @app.route('/users/<int:page>/<int:stype>')
 @login_required
 def list_users(page=1,stype=1):
-	sort = {1:User.last_name,2:User.first_name,3:desc(User.dob)}
+	sort = {1:User.last_name,2:User.first_name,3:desc(User.friend_count)}
 	if stype in [1,2,3]:
 		return render_template('index.html', users=User.query.order_by(sort[stype]).paginate(page,MAX_USERS,False))
 	return redirect(url_for('home'))
@@ -192,13 +192,9 @@ def edit(id):
 		flash('You are not authorized to edit this profile')
 		return redirect(url_for('home'))
 
-	form=EditProf()
+	form=EditProf(obj=g.user)
 	if form.validate_on_submit():
-		if form.firstname.data: g.user.first_name=form.firstname.data
-		if form.lastname.data: g.user.last_name=form.lastname.data
-		if form.nickname.data: g.user.nickname=form.nickname.data
-		if form.dob.data: g.user.dob=form.dob.data
-		if form.hometown.data: g.user.home=form.hometown.data
+		form.populate_obj(g.user)
 		db.session.add(g.user)
 		db.session.commit()
 

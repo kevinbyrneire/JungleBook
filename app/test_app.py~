@@ -1,0 +1,14 @@
+from app import app, db
+from app.models import User
+import pytest
+import os
+from datetime import date
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+db.create_all()
+class Test():
+	def test_friends(self):
+		x1 = User(first_name='Test1',last_name = 'Test1',email='test1@gmail.com',dob=date(1990,1,1))
+		x2 = User(first_name='Test2',last_name = 'Test2',email='test2@gmail.com',dob=date(1990,1,1))
+		x3 = User(first_name='Test3',last_name = 'Test3',email='test3@gmail.com',dob=date(1990,1,1))
+		assert x1.is_friend(x2)

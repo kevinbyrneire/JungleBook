@@ -4,10 +4,10 @@
 <div style = "margin-left:20px;">
 <form action="" method = 'post' name='SignUp'>
 {{form.hidden_tag()}}
-<p> First Name <br> {{form.firstname(size = 30)}}</p>
-<p> Last Name<br> {{form.lastname(size=30)}}</p>
+<p> First Name <br> {{form.first_name(size = 30)}}</p>
+<p> Last Name<br> {{form.last_name(size=30)}}</p>
 <p> DOB (dd/mm/yyyy) <br> {{form.dob}}</p>
-<p> Hometown<br> {{form.hometown(size=30)}}</p>
+<p> Hometown<br> {{form.home(size=30)}}</p>
 <p> Nickname <br> {{form.nickname(size=20)}}</p>
 
 <input type = "submit" value = "Save"> <a href={{url_for('profile',id=g.user.id)}} style= "text-decoration: none; color:black;">

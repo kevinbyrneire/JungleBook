@@ -4,7 +4,7 @@
 <h1 style = "margin-left:10px;"> {{user.first_name}} {{user.last_name}} {%if user.nickname%}({{user.nickname}}){%endif%} </h1> 
 
 <div style = "margin-left:20px;">
-<a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
+
 {% if user.id == g.user.id %}
  <a href = "/requests"> Friend Requests({{g.user.pending.count()}})  </a>
 
@@ -14,11 +14,14 @@
     <a href = "/add_bestie/{{user.id}}"> Make Bestie</a>
   {%endif%}
 {%elif g.user.is_requested(user)%} <a href="/add_friend/{{user.id}}"> Confirm Friendship</a> 
+{%elif user.is_requested(g.user)%} Friend request sent <br>
 {%else%} <a href="/add_friend/{{user.id}}"> Add Friend</a> 
 {%endif%}
 
 {%endif%} 
 <br>
+<a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
+
 <p>Age {{age}}<br>
 {%if user.home%}
 From {{user.home}} <br>

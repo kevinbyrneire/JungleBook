@@ -18,7 +18,7 @@
   {{g.user.first_name}} {{g.user.last_name}} <a href="/">Home</a> |   
   <a href="/profile/{{g.user.id}}">Profile</a> 
   <a href="/logout" style= "float: right; margin-right:10px;" >Logout</a> |
-  <a href="{{url_for('edit',id=g.user.id)}}"> Account Settings</a> <br>
+  <a href="{{url_for('edit',id=g.user.id)}}"> Settings</a> <br>
   {% else %}
   JungleBook: <a href="/">Home</a> |
   <a href="/login">Login</a> 	 

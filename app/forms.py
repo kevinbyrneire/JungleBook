@@ -26,10 +26,10 @@ class SignUp(Form):
 	password2 = PasswordField('Confirm Password',[validators.Required()])
 
 class EditProf(Form):
-	firstname = TextField('First Name',[validators.Optional()])
-	lastname = TextField('Last Name',[validators.Optional()])
-	dob = DateField('DOB',[validators.Optional()],format='%d/%m/%Y')
-	hometown = TextField('Hometown',[validators.Optional()])
+	first_name = TextField('First Name',[validators.Required()])
+	last_name = TextField('Last Name',[validators.Required()])
+	dob = DateField('DOB',[validators.Required()],format='%d/%m/%Y')
+	home = TextField('Hometown',[validators.Optional()])
 	nickname = TextField('Nickname',[validators.Optional()])
 
 

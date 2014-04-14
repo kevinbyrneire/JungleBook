@@ -15,7 +15,7 @@ class SignUp(Form):
 
 	email = TextField('E-mail',[validators.Required()])
 
-	dob = DateField('DOB',[validators.Required()],format='%d/%m/%Y')
+	dob = DateField('DOB',[validators.Required(message='Please enter DOB in the required form')],format='%d/%m/%Y')
 
 	hometown = TextField('Hometown',[validators.Optional()])
 
@@ -26,20 +26,12 @@ class SignUp(Form):
 	password2 = PasswordField('Confirm Password',[validators.Required()])
 
 class EditProf(Form):
-	firstname = TextField('First Name',[validators.Optional()])
-	lastname = TextField('Last Name',[validators.Optional()])
-	dob = DateField('DOB',[validators.Optional()],format='%d/%m/%Y')
+	firstname = TextField('First Name',[validators.Required()])
+	lastname = TextField('Last Name',[validators.Required()])
+	dob = DateField('DOB',[validators.Required()],format='%d/%m/%Y')
 	hometown = TextField('Hometown',[validators.Optional()])
 	nickname = TextField('Nickname',[validators.Optional()])
-    	def __init__(self, *args, **kwargs):
-        	Form.__init__(self, *args, **kwargs)
-        
-	def validate(self):
-		if not Form.validate(self):
-            
-			return False
-		return True
-        
+
 
 class Search(Form):
 	search=TextField('Search',[validators.Required()])
