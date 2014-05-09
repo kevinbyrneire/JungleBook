@@ -5,27 +5,37 @@
 
 <div style = "margin-left:20px;">
 
-{% if user.id == g.user.id %}
- <a href = "/requests"> Friend Requests({{g.user.pending.count()}})  </a>
+{% if user.besty %}
+<p>Best friends with <a href="/profile/{{user.besty.id}}">{{user.besty.first_name}} {{user.besty.last_name}}</a> </p>
+{%endif%}
 
-{%else%}
-{%if g.user.is_friend(user)%} <a href="/remove_friend/{{user.id}}"> Unfriend <br> </a>
-  {%if not g.user.besty == user%} 
-    <a href = "/add_bestie/{{user.id}}"> Make Bestie</a>
+<p>
+	{% if user.id == g.user.id %}
+	 <a href = "/requests"> Friend Requests({{g.user.pending.count()}})  </a> <br>
+
+	{%else%}
+	{%if g.user.is_friend(user)%} <a href="/remove_friend/{{user.id}}"> Unfriend <br> </a>
+	  {%if not g.user.besty == user%} 
+	    <a href = "/add_bestie/{{user.id}}"> Make Bestie</a><br>
+	  {%else%}
+	    <a href = "/remove_bestie"> Remove Bestie</a> <br>
+	  {%endif%}
+	{%elif g.user.is_requested(user)%} <a href="/add_friend/{{user.id}}"> Confirm Friendship</a>
+	{%elif user.is_requested(g.user)%} Friend request sent 
+	{%else%} <a href="/add_friend/{{user.id}}"> Add Friend</a>
+
+	{%endif%}
+	{%endif%} 
+
+	
+</p>
+
+<p> <a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
+  Age {{age}}<br>
+  {%if user.home%}
+  From {{user.home}} <br>
   {%endif%}
-{%elif g.user.is_requested(user)%} <a href="/add_friend/{{user.id}}"> Confirm Friendship</a> 
-{%elif user.is_requested(g.user)%} Friend request sent <br>
-{%else%} <a href="/add_friend/{{user.id}}"> Add Friend</a> 
-{%endif%}
-
-{%endif%} 
-<br>
-<a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
-
-<p>Age {{age}}<br>
-{%if user.home%}
-From {{user.home}} <br>
-{%endif%}
-Email: {{user.email}} </p>
+  Email: {{user.email}} 
+</p>
 </div>
 {% endblock %}

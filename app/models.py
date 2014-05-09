@@ -40,10 +40,8 @@ class User(db.Model):
 	asked = db.relationship('User',secondary=requests, primaryjoin=(id==requests.c.id_1),
 	secondaryjoin=(id==requests.c.id_2), backref=db.backref('pending',lazy='dynamic'),lazy='dynamic')
 
-	#friend_count = column_property(select([func.count(friend)]).where(or_(friend.c.id_2==id,friend.c.id_1==id)))#.correlate_except(friend))
 
-
-	def __init__(self, first_name=None,last_name=None, nickname = None, email=None,home=None, password=None,dob=None):
+	def __init__(self, first_name=None,last_name=None, nickname = None, email=None,home=None, password=None,dob=None,best=None):
 		self.first_name = first_name
 		self.last_name=last_name
 		self.nickname = nickname
@@ -51,6 +49,7 @@ class User(db.Model):
 		self.dob = dob
 		self.password = password
 		self.home=home
+		self.besty = best
 
 	def is_authenticated(self):
 		return True
@@ -95,6 +94,8 @@ class User(db.Model):
 				self.friends.remove(my_friend)
 			else:
 				self.friend.remove(my_friend)
+		if self.besty==my_friend:
+			self.besty=None
 		return self		
 
 	def list_friends(self):

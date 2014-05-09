@@ -43,7 +43,7 @@ def list_users(page=1,stype=1):
 
 
 
-#The signup page. Here, a user sets up an account by enetring their profile info.
+#The signup page. Here, a user sets up an account by entering their profile info.
 @app.route('/signup',methods=['GET','POST'])
 def sign_up():
 	if g.user is not None and g.user.is_authenticated():
@@ -139,7 +139,7 @@ def add_friend(id):
 	if g.user.is_friend(new): flash('You are now friends with '+new.first_name+' '+new.last_name)
 	else: flash('Friend request sent to ' + new.first_name+' '+new.last_name)
 	
-	return redirect(url_for('profile',id=new.id))
+	return redirect(url_for('profile',id=id))
 
 
 
@@ -166,6 +166,19 @@ def add_bestie(id):
 	db.session.add(g.user.add_best(best))
 	db.session.commit()
 	flash('You are now best friends with '+best.first_name+' '+best.last_name)
+	return redirect(url_for('profile',id=id))
+
+@app.route('/remove_bestie')
+@login_required
+def remove_bestie():
+	if not g.user.besty:
+		flash("You don't have a best friend!")
+	else:
+		name=g.user.besty.first_name
+		g.user.besty=None
+		db.session.add(g.user)
+		db.session.commit()
+		flash('You are no longer best friends with '+ name)
 	return redirect(url_for('home'))
 
 
