@@ -110,4 +110,4 @@ class User(db.Model):
 	
 	@friend_count.expression
 	def friend_count(cls):
-		return select([func.count(friend)]).where(or_(friend.c.id_2==cls.id,friend.c.id_1==cls.id))
+		return select([func.count(friend.c.id_1)]).where(or_(friend.c.id_2==cls.id,friend.c.id_1==cls.id))
