@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy import func,select,or_,and_
+from sqlalchemy import func,select,or_
 from sqlalchemy.orm import column_property
 from sqlalchemy.ext.hybrid import hybrid_property
 from app import app
@@ -84,7 +84,8 @@ class User(db.Model):
 			return self
 
 	def add_best(self,my_friend):
-		self.besty=my_friend
+		if self.is_friend(my_friend):
+			self.besty=my_friend
 		return self
 
 	
@@ -101,9 +102,6 @@ class User(db.Model):
 	def list_friends(self):
 		return self.friends.union(self.friend).order_by(User.last_name).all()
 	
-
-	def count_friends(self):
-		return self.friends.count()+self.friend.count()
 
 	@hybrid_property
 	def friend_count(self):

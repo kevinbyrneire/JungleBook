@@ -12,16 +12,16 @@ def load_user(id):
 	return User.query.get(int(id))
 
 @app.before_request
-# use the global g variable so we can access the current user in templates.
 def before_request():
+	'''Use the global g variable so we can access the current user in templates.'''
 	g.user=current_user 
 
 
 
 
-# the main home page. displays either list of users or signup page if not signed in.#
 @app.route('/') 
 def home():
+	'''Display list of users if signed in, or signup page otherwise'''
 	if g.user.is_authenticated():
 		return redirect(url_for('list_users'))
 	return redirect(url_for('sign_up'))
@@ -29,12 +29,11 @@ def home():
 
 
 
-# The homepage redirects to here if there is a user signed in.
-# Simply displays all the users on the network, with various sorting options and pagination. #
 @app.route('/users')
 @app.route('/users/<int:page>/<int:stype>')
 @login_required
 def list_users(page=1,stype=1):
+	'''List all users on network with options for sorting and pagination '''
 	sort = {1:User.last_name,2:User.first_name,3:desc(User.friend_count)}
 	if stype in [1,2,3]:
 		return render_template('index.html', users=User.query.order_by(sort[stype]).paginate(page,MAX_USERS,False))
@@ -43,9 +42,9 @@ def list_users(page=1,stype=1):
 
 
 
-#The signup page. Here, a user sets up an account by enetring their profile info.
 @app.route('/signup',methods=['GET','POST'])
 def sign_up():
+	''' Set up a user account '''
 	if g.user is not None and g.user.is_authenticated():
 		flash('You are already logged in as '+ g.user.first_name+' '+g.user.last_name)
 		return redirect(url_for('home'))
@@ -67,8 +66,7 @@ def sign_up():
 
 
 
-
-# the login page. 
+ 
 @app.route('/login',methods=['GET','POST'])
 def login():
 	
@@ -95,7 +93,7 @@ def login():
 
 
 
-# the logout page. User must be logged in to access this page.
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -107,10 +105,10 @@ def logout():
 
 
 
-# Users' profiles. A user must be signed in to view other profiles.
 @app.route('/profile/<id>')
 @login_required
 def profile(id):
+	'''Display profile for user with specified id. Login required '''
 	user = User.query.get(id)
 	if user is None:
 		flash('Not a valid user.')
@@ -124,10 +122,10 @@ def profile(id):
 
 
 
-# The method for adding friends.
 @app.route('/add_friend/<id>')
 @login_required
 def add_friend(id):
+	''' Add user with specified id to the current user's friends_list'''
 	new = User.query.get(id) # this is the user that will be added to the signed in user's friends.
 	if new is None:
 		flash('That is not a valid user-id.')
@@ -145,10 +143,10 @@ def add_friend(id):
 
 
 
-#Method for removing users from the friends list.
 @app.route('/remove_friend/<id>')
 @login_required
 def remove_friend(id):
+	''' Remove friend with the specified id from current users friends '''
 	exfriend = User.query.get(id) #this is the friend we want to remove.
 	x=g.user.remove_friend(exfriend)
 	db.session.add(x)
@@ -162,6 +160,7 @@ def remove_friend(id):
 @app.route('/add_bestie/<id>')
 @login_required
 def add_bestie(id):
+	'''Add the specified user as the current user's best friend'''
 	best = User.query.get(id)
 	db.session.add(g.user.add_best(best))
 	db.session.commit()
@@ -171,6 +170,7 @@ def add_bestie(id):
 @app.route('/remove_bestie')
 @login_required
 def remove_bestie():
+	''' Remove the current user's best friend '''
 	if not g.user.besty:
 		flash("You don't have a best friend!")
 	else:
@@ -183,24 +183,28 @@ def remove_bestie():
 
 
 
-# This page displays the list of friends of a user.
 @app.route('/friends/<id>')
 @login_required
 def show_friends(id):
+	''' Display the specified user's friends '''
 	return render_template('friends.html',user=User.query.get(id))
+
+
 
 @app.route('/requests')
 @login_required
 def show_requests():
+	'''Display all the friend requests for the current user '''
 	return render_template('requests.html')
 
 
 
-# This is the page for editing a profile.
-# A user can only edit their own profile and no-one else's.
+
+
 @app.route('/edit/<id>',methods = ['GET','POST'])
 @login_required
 def edit(id):
+	''' Forum for user to edit their profile. A user can only edit their own profile '''
 	if int(id)!=g.user.id:
 		flash('You are not authorized to edit this profile')
 		return redirect(url_for('home'))
@@ -220,17 +224,19 @@ def edit(id):
 
 
 
-# If a user wants to delete their account they are redirected here to confirm.
+
 @app.route('/confirm')
 @login_required
 def confirm_del():
+	''' Confirm account deletion '''
 	return render_template('confirmation.html')
 
 
-# If confirmation is given then the user is redirected here and their account is deleted.
+
 @app.route('/remove')
 @login_required
-def remove_acc():	
+def remove_acc():
+	'''Delete the current user's account '''	
 	db.session.delete(g.user)
 	db.session.commit()
 	flash('Your account has been deleted')

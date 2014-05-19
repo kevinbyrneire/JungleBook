@@ -27,13 +27,15 @@
 	{%endif%}
 	{%endif%} 
 
-	<a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
+	
 </p>
 
-<p>Age {{age}}<br>
-{%if user.home%}
-From {{user.home}} <br>
-{%endif%}
-Email: {{user.email}} </p>
+<p> <a href="/friends/{{user.id}}">Friends({{user.count_friends()}})<br> </a>
+  Age {{age}}<br>
+  {%if user.home%}
+  From {{user.home}} <br>
+  {%endif%}
+  Email: {{user.email}} 
+</p>
 </div>
 {% endblock %}
