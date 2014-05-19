@@ -1,3 +1,3 @@
 JungleBook
 ==========
-Unit tests are comtained in "test_app.py"
+Unit tests are contained in "test_app.py"
